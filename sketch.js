@@ -34,25 +34,24 @@ var levelCompletedSound;
 
 var playedEndSound;
 
-function preload()
-{
-    soundFormats('mp3','wav');
+function preload() {
+	soundFormats('mp3', 'wav');
 
 	// load jump sound
-    jumpSound = loadSound('assets/jump.wav');
-    jumpSound.setVolume(0.1);
+	jumpSound = loadSound('assets/jump.wav');
+	jumpSound.setVolume(0.1);
 
 	// load collectable sound
-    collectableSound = loadSound('assets/collectable.wav');
-    collectableSound.setVolume(0.1);
+	collectableSound = loadSound('assets/collectable.wav');
+	collectableSound.setVolume(0.1);
 
 	// load lose sound
-    loseSound = loadSound('assets/lose.wav');
-    loseSound.setVolume(0.1);
+	loseSound = loadSound('assets/lose.wav');
+	loseSound.setVolume(0.1);
 
 	// load level completed sound
-    levelCompletedSound = loadSound('assets/level_completed.wav');
-    levelCompletedSound.setVolume(0.1);
+	levelCompletedSound = loadSound('assets/level_completed.wav');
+	levelCompletedSound.setVolume(0.1);
 }
 
 function setup() {
@@ -401,31 +400,31 @@ function startGame() {
 
 	trees_x = [-820, -410, -255, -100, 430, 660, 1000, 1320, 1480, 1800, 2300, 2550];
 	clouds = [
-		{ x_pos: -200, y_pos: 140, size: 105 }, 
-		{ x_pos: -300, y_pos: 80, size: 75 }, 
-		{ x_pos: -600, y_pos: 100, size: 85 }, 
-		{ x_pos: 200, y_pos: 120, size: 105 }, 
-		{ x_pos: 400, y_pos: 60, size: 60 }, 
-		{ x_pos: 800, y_pos: 100, size: 85 }, 
-		{ x_pos: 1200, y_pos: 125, size: 115 }, 
-		{ x_pos: 1400, y_pos: 50, size: 55 }, 
-		{ x_pos: 1810, y_pos: 100, size: 80 }, 
+		{ x_pos: -200, y_pos: 140, size: 105 },
+		{ x_pos: -300, y_pos: 80, size: 75 },
+		{ x_pos: -600, y_pos: 100, size: 85 },
+		{ x_pos: 200, y_pos: 120, size: 105 },
+		{ x_pos: 400, y_pos: 60, size: 60 },
+		{ x_pos: 800, y_pos: 100, size: 85 },
+		{ x_pos: 1200, y_pos: 125, size: 115 },
+		{ x_pos: 1400, y_pos: 50, size: 55 },
+		{ x_pos: 1810, y_pos: 100, size: 80 },
 		{ x_pos: 2208, y_pos: 130, size: 115 }
 	];
 	mountains = [
-		{ x_pos: 340, width: 300 }, 
+		{ x_pos: 340, width: 300 },
 		{ x_pos: 1900, width: 400 }
 	];
 	canyons = [
-		{ x_pos: 0, width: 180 }, 
-		{ x_pos: 780, width: 100 }, 
+		{ x_pos: 0, width: 180 },
+		{ x_pos: 780, width: 100 },
 		{ x_pos: 2380, width: 120 }
 	];
 	collectables = [
-		{ x_pos: -480, y_pos: 410, size: 20, isFound: false }, 
-		{ x_pos: 180, y_pos: 410, size: 20, isFound: false }, 
-		{ x_pos: 1080, y_pos: 410, size: 20, isFound: false }, 
-		{ x_pos: 1150, y_pos: 410, size: 20, isFound: false }, 
+		{ x_pos: -480, y_pos: 410, size: 20, isFound: false },
+		{ x_pos: 180, y_pos: 410, size: 20, isFound: false },
+		{ x_pos: 1080, y_pos: 410, size: 20, isFound: false },
+		{ x_pos: 1150, y_pos: 410, size: 20, isFound: false },
 		{ x_pos: 2250, y_pos: 410, size: 20, isFound: false }
 	];
 
