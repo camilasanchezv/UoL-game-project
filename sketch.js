@@ -404,8 +404,10 @@ function createPlatforms(x, y, length) {
 		y: y,
 		length: length,
 		draw: function () {
-			fill(255, 0, 255)
-			rect(this.x, this.y, this.length, 24)
+			fill(135, 83, 40);
+			rect(this.x, this.y, this.length, 24);
+			fill(0, 155, 0);
+			rect(this.x, this.y, this.length, 6);
 		},
 		checkContact: function (characterX, characterY) {
 			if (characterX > this.x && characterX < this.x + this.length) {
