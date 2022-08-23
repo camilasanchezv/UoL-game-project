@@ -27,6 +27,8 @@ var flagpole;
 
 var lives;
 
+var platforms;
+
 var jumpSound;
 var collectableSound;
 var loseSound;
@@ -80,10 +82,12 @@ function draw() {
 	translate(scrollPos, 0);
 
 	drawClouds();
-
 	drawMountains();
-
 	drawTrees();
+
+	for (var i = 0; i < platforms.length; i++) {
+		platforms[i].draw();
+	}
 
 	for (var i = 0; i < canyons.length; i++) {
 		drawCanyon(canyons[i]);
@@ -142,8 +146,18 @@ function draw() {
 	}
 
 	if (gameChar_y < floorPos_y) {
-		gameChar_y += 2;
-		isFalling = true;
+		var isInPlatform = false;
+		for (var i = 0; i < platforms.length; i++) {
+			if (platforms[i].checkContact(gameChar_world_x, gameChar_y)) {
+				isInPlatform = true;
+				isFalling = false
+				break;
+			}
+		}
+		if (!isInPlatform) {
+			gameChar_y += 2;
+			isFalling = true;
+		}
 	} else {
 		isFalling = false;
 	}
@@ -171,7 +185,7 @@ function keyReleased() {
 		isLeft = false;
 	} else if (keyCode === 39) {
 		isRight = false;
-	} else if (keyCode === 32 && gameChar_y === floorPos_y) {
+	} else if (keyCode === 32 && !isFalling) {
 		jumpSound.play();
 		gameChar_y -= 100;
 	}
@@ -383,6 +397,28 @@ function renderLives() {
 	}
 }
 
+// create functions
+function createPlatforms(x, y, length) {
+	return {
+		x: x,
+		y: y,
+		length: length,
+		draw: function () {
+			fill(255, 0, 255)
+			rect(this.x, this.y, this.length, 24)
+		},
+		checkContact: function (characterX, characterY) {
+			if (characterX > this.x && characterX < this.x + this.length) {
+				var dist = this.y - characterY;
+				if (dist >= 0 && dist < 5) {
+					return true
+				}
+			}
+			return false
+		}
+	}
+}
+
 // game setup
 function startGame() {
 	playedEndSound = false;
@@ -427,6 +463,9 @@ function startGame() {
 		{ x_pos: 1150, y_pos: 410, size: 20, isFound: false },
 		{ x_pos: 2250, y_pos: 410, size: 20, isFound: false }
 	];
+	platforms = [];
+
+	platforms.push(createPlatforms(100, floorPos_y - 90, 200))
 
 	game_score = 0;
 
