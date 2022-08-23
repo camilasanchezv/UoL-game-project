@@ -177,6 +177,9 @@ function keyPressed() {
 		isLeft = true;
 	} else if (keyCode === 39) {
 		isRight = true;
+	} else if (keyCode === 32 && !isFalling) {
+		jumpSound.play();
+		gameChar_y -= 115;
 	}
 }
 
@@ -185,9 +188,6 @@ function keyReleased() {
 		isLeft = false;
 	} else if (keyCode === 39) {
 		isRight = false;
-	} else if (keyCode === 32 && !isFalling) {
-		jumpSound.play();
-		gameChar_y -= 100;
 	}
 }
 
@@ -436,7 +436,7 @@ function startGame() {
 	isFalling = false;
 	isPlummeting = false;
 
-	trees_x = [-820, -410, -255, -100, 430, 660, 1000, 1320, 1480, 1800, 2300, 2550];
+	trees_x = [-820, -410, -255, -100, 430, 660, 1000, 1320, 1480, 1800, 2550, 2680];
 	clouds = [
 		{ x_pos: -200, y_pos: 140, size: 105 },
 		{ x_pos: -300, y_pos: 80, size: 75 },
@@ -451,23 +451,27 @@ function startGame() {
 	];
 	mountains = [
 		{ x_pos: 340, width: 300 },
-		{ x_pos: 1900, width: 400 }
+		{ x_pos: 1100, width: 400 },
+		{ x_pos: 1850, width: 300 }
 	];
 	canyons = [
 		{ x_pos: 0, width: 180 },
 		{ x_pos: 780, width: 100 },
-		{ x_pos: 2380, width: 120 }
+		{ x_pos: 1580, width: 100 },
+		{ x_pos: 2000, width: 420 }
 	];
 	collectables = [
 		{ x_pos: -480, y_pos: 410, size: 20, isFound: false },
 		{ x_pos: 180, y_pos: 410, size: 20, isFound: false },
 		{ x_pos: 1080, y_pos: 410, size: 20, isFound: false },
 		{ x_pos: 1150, y_pos: 410, size: 20, isFound: false },
-		{ x_pos: 2250, y_pos: 410, size: 20, isFound: false }
+		{ x_pos: 2550, y_pos: 210, size: 20, isFound: false }
 	];
 	platforms = [];
-
 	platforms.push(createPlatforms(100, floorPos_y - 90, 200))
+	platforms.push(createPlatforms(780, floorPos_y - 90, 100))
+	platforms.push(createPlatforms(2100, floorPos_y - 65, 200))
+	platforms.push(createPlatforms(2380, floorPos_y - 140, 100))
 
 	game_score = 0;
 
