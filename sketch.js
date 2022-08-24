@@ -20,14 +20,13 @@ var mountains;
 var collectables;
 var canyons;
 var trees_x;
+var platforms;
 
 var game_score;
-
 var flagpole;
-
 var lives;
 
-var platforms;
+var enemies;
 
 var jumpSound;
 var collectableSound;
@@ -102,6 +101,19 @@ function draw() {
 	}
 
 	renderFlagpole();
+
+	for (var i = 0; i < enemies.length; i++) {
+		enemies[i].draw();
+
+		var touchedEnemy = enemies[i].checkContact(gameChar_world_x, gameChar_y)
+
+		if (touchedEnemy) {
+			if (lives > 0) {
+				startGame();
+				break;
+			}
+		}
+	}
 
 	pop();
 
@@ -426,6 +438,34 @@ function createPlatforms(x, y, length) {
 	}
 }
 
+function Enemy(x, y, range) {
+	this.x = x;
+	this.y = y;
+	this.range = range;
+	this.currentX = x;
+	this.inc = 1;
+	this.update = function () {
+		this.currentX += this.inc;
+		if (this.currentX >= this.x + this.range) {
+			this.inc = -1;
+		} else if (this.currentX < this.x) {
+			this.inc = 1;
+		}
+	};
+	this.draw = function () {
+		this.update();
+		fill(255, 0, 0)
+		ellipse(this.currentX, this.y, 20, 20)
+	};
+	this.checkContact = function (characterX, characterY) {
+		var d = dist(characterX, characterY, this.currentX, this.y)
+		if (d < 20) {
+			return true
+		}
+		return false
+	}
+}
+
 // game setup
 function startGame() {
 	playedEndSound = false;
@@ -442,6 +482,7 @@ function startGame() {
 	isPlummeting = false;
 
 	trees_x = [-820, -410, -255, -100, 430, 660, 1000, 1320, 1480, 1800, 2550, 2680];
+
 	clouds = [
 		{ x_pos: -200, y_pos: 140, size: 105 },
 		{ x_pos: -300, y_pos: 80, size: 75 },
@@ -454,17 +495,20 @@ function startGame() {
 		{ x_pos: 1810, y_pos: 100, size: 80 },
 		{ x_pos: 2208, y_pos: 130, size: 115 }
 	];
+
 	mountains = [
 		{ x_pos: 340, width: 300 },
 		{ x_pos: 1100, width: 400 },
 		{ x_pos: 1850, width: 300 }
 	];
+
 	canyons = [
 		{ x_pos: 0, width: 180 },
 		{ x_pos: 780, width: 100 },
 		{ x_pos: 1580, width: 100 },
 		{ x_pos: 2000, width: 420 }
 	];
+
 	collectables = [
 		{ x_pos: -480, y_pos: 410, size: 20, isFound: false },
 		{ x_pos: 180, y_pos: 410, size: 20, isFound: false },
@@ -472,11 +516,15 @@ function startGame() {
 		{ x_pos: 1150, y_pos: 410, size: 20, isFound: false },
 		{ x_pos: 2550, y_pos: 210, size: 20, isFound: false }
 	];
+
 	platforms = [];
 	platforms.push(createPlatforms(100, floorPos_y - 90, 200))
 	platforms.push(createPlatforms(780, floorPos_y - 90, 100))
 	platforms.push(createPlatforms(2100, floorPos_y - 65, 200))
 	platforms.push(createPlatforms(2380, floorPos_y - 140, 100))
+
+	enemies = []
+	enemies.push(new Enemy(200, floorPos_y - 10, 100))
 
 	game_score = 0;
 
