@@ -177,9 +177,14 @@ function keyPressed() {
 		isLeft = true;
 	} else if (keyCode === 39) {
 		isRight = true;
-	} else if (keyCode === 32 && !isFalling) {
-		jumpSound.play();
-		gameChar_y -= 115;
+	} else if (keyCode === 32) {
+		if (lives < 1 || flagpole.isReached) {
+			startGame();
+			lives = 3
+		} else if (!isFalling) {
+			jumpSound.play();
+			gameChar_y -= 115;
+		}
 	}
 }
 
