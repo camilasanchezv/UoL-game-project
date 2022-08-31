@@ -84,13 +84,13 @@ function draw() {
   drawMountains();
   drawTrees();
 
-  for (let i = 0; i < platforms.length; i++) {
-    platforms[i].draw();
-  }
-
   for (let i = 0; i < canyons.length; i++) {
     drawCanyon(canyons[i]);
     checkCanyon(canyons[i]);
+  }
+
+  for (let i = 0; i < platforms.length; i++) {
+    platforms[i].draw();
   }
 
   for (let i = 0; i < collectables.length; i++) {
@@ -700,7 +700,7 @@ function startGame() {
   isPlummeting = false;
 
   trees_x = [
-    -820, -410, -255, -100, 430, 660, 1000, 1320, 1480, 1800, 2550, 2680,
+    -820, -410, -255, -100, 430, 1000, 1320, 1480, 1800, 2550, 2680,
   ];
 
   clouds = [
@@ -724,8 +724,8 @@ function startGame() {
 
   canyons = [
     { x_pos: 0, width: 180 },
-    { x_pos: 780, width: 100 },
-    { x_pos: 1580, width: 100 },
+    { x_pos: 580, width: 340 },
+    { x_pos: 1520, width: 200 },
     { x_pos: 2000, width: 420 },
   ];
 
@@ -739,7 +739,7 @@ function startGame() {
 
   platforms = [];
   platforms.push(createPlatforms(100, floorPos_y - 90, 200));
-  platforms.push(createPlatforms(780, floorPos_y - 90, 100));
+  platforms.push(createPlatforms(725, floorPos_y - 15, 50));
   platforms.push(createPlatforms(2100, floorPos_y - 65, 200));
   platforms.push(createPlatforms(2380, floorPos_y - 140, 100));
 
