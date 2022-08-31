@@ -108,6 +108,7 @@ function draw() {
     let touchedEnemy = enemies[i].checkContact(gameChar_world_x, gameChar_y);
 
     if (touchedEnemy) {
+      lives -= 1;
       if (lives > 0) {
         startGame();
         break;
