@@ -4,36 +4,36 @@ The Game Project 7 - Make it awesome
 
 */
 
-var gameChar_x;
-var gameChar_y;
-var floorPos_y;
-var scrollPos;
-var gameChar_world_x;
+let gameChar_x;
+let gameChar_y;
+let floorPos_y;
+let scrollPos;
+let gameChar_world_x;
 
-var isLeft;
-var isRight;
-var isFalling;
-var isPlummeting;
+let isLeft;
+let isRight;
+let isFalling;
+let isPlummeting;
 
-var clouds;
-var mountains;
-var collectables;
-var canyons;
-var trees_x;
-var platforms;
+let clouds;
+let mountains;
+let collectables;
+let canyons;
+let trees_x;
+let platforms;
 
-var game_score;
-var flagpole;
-var lives;
+let game_score;
+let flagpole;
+let lives;
 
-var enemies;
+let enemies;
 
-var jumpSound;
-var collectableSound;
-var loseSound;
-var levelCompletedSound;
+let jumpSound;
+let collectableSound;
+let loseSound;
+let levelCompletedSound;
 
-var playedEndSound;
+let playedEndSound;
 
 function preload() {
 	soundFormats('mp3', 'wav');
@@ -84,16 +84,16 @@ function draw() {
 	drawMountains();
 	drawTrees();
 
-	for (var i = 0; i < platforms.length; i++) {
+	for (let i = 0; i < platforms.length; i++) {
 		platforms[i].draw();
 	}
 
-	for (var i = 0; i < canyons.length; i++) {
+	for (let i = 0; i < canyons.length; i++) {
 		drawCanyon(canyons[i]);
 		checkCanyon(canyons[i]);
 	}
 
-	for (var i = 0; i < collectables.length; i++) {
+	for (let i = 0; i < collectables.length; i++) {
 		if (!collectables[i].isFound) {
 			drawCollectable(collectables[i]);
 			checkCollectables(collectables[i]);
@@ -102,10 +102,10 @@ function draw() {
 
 	renderFlagpole();
 
-	for (var i = 0; i < enemies.length; i++) {
+	for (let i = 0; i < enemies.length; i++) {
 		enemies[i].draw();
 
-		var touchedEnemy = enemies[i].checkContact(gameChar_world_x, gameChar_y)
+		let touchedEnemy = enemies[i].checkContact(gameChar_world_x, gameChar_y)
 
 		if (touchedEnemy) {
 			if (lives > 0) {
@@ -158,8 +158,8 @@ function draw() {
 	}
 
 	if (gameChar_y < floorPos_y) {
-		var isInPlatform = false;
-		for (var i = 0; i < platforms.length; i++) {
+		let isInPlatform = false;
+		for (let i = 0; i < platforms.length; i++) {
 			if (platforms[i].checkContact(gameChar_world_x, gameChar_y)) {
 				isInPlatform = true;
 				isFalling = false
@@ -373,7 +373,7 @@ function renderFlagpole() {
 }
 
 function checkFlagpole() {
-	var distance = abs(gameChar_world_x - flagpole.x_pos);
+	const distance = abs(gameChar_world_x - flagpole.x_pos);
 	if (distance < 15) {
 		flagpole.isReached = true;
 	}
@@ -408,7 +408,7 @@ function checkPlayerDie() {
 }
 
 function renderLives() {
-	for (var i = 0; i < lives; i++) {
+	for (let i = 0; i < lives; i++) {
 		fill(212, 175, 55);
 		ellipse(width - 25 * (i + 1), 20, 15);
 	}
@@ -428,7 +428,7 @@ function createPlatforms(x, y, length) {
 		},
 		checkContact: function (characterX, characterY) {
 			if (characterX > this.x && characterX < this.x + this.length) {
-				var dist = this.y - characterY;
+				const dist = this.y - characterY;
 				if (dist >= 0 && dist < 5) {
 					return true
 				}
@@ -458,8 +458,8 @@ function Enemy(x, y, range) {
 		ellipse(this.currentX, this.y, 20, 20)
 	};
 	this.checkContact = function (characterX, characterY) {
-		var d = dist(characterX, characterY, this.currentX, this.y)
-		if (d < 20) {
+		const distance = dist(characterX, characterY, this.currentX, this.y)
+		if (distance < 20) {
 			return true
 		}
 		return false
