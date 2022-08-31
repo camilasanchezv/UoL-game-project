@@ -64,6 +64,7 @@ function setup() {
 }
 
 function draw() {
+  // draw all scenario
   background(100, 155, 255);
 
   noStroke();
@@ -84,21 +85,21 @@ function draw() {
   drawMountains();
   drawTrees();
 
-  for (let i = 0; i < canyons.length; i++) {
-    drawCanyon(canyons[i]);
-    checkCanyon(canyons[i]);
-  }
+  canyons.forEach((canyon) => {
+    drawCanyon(canyon);
+    checkCanyon(canyon);
+  });
 
-  for (let i = 0; i < platforms.length; i++) {
-    platforms[i].draw();
-  }
+  platforms.forEach((platform) => {
+    platform.draw();
+  });
 
-  for (let i = 0; i < collectables.length; i++) {
-    if (!collectables[i].isFound) {
-      drawCollectable(collectables[i]);
-      checkCollectables(collectables[i]);
+  collectables.forEach((collectable) => {
+    if (!collectable.isFound) {
+      drawCollectable(collectable);
+      checkCollectables(collectable);
     }
-  }
+  });
 
   renderFlagpole();
 
@@ -593,9 +594,7 @@ function createPlatforms(x, y, length) {
     checkContact: function (characterX, characterY) {
       if (characterX > this.x && characterX < this.x + this.length) {
         const dist = this.y - characterY;
-        if (dist >= 0 && dist < 5) {
-          return true;
-        }
+        return dist >= 0 && dist < 5;
       }
       return false;
     },
@@ -699,9 +698,7 @@ function startGame() {
   isFalling = false;
   isPlummeting = false;
 
-  trees_x = [
-    -820, -410, -255, -100, 430, 1000, 1320, 1480, 1800, 2550, 2680,
-  ];
+  trees_x = [-820, -410, -255, -100, 430, 1000, 1320, 1480, 1800, 2550, 2680];
 
   clouds = [
     { x_pos: -200, y_pos: 140, size: 105 },
