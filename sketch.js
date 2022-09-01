@@ -4,16 +4,15 @@ The Game Project 7 - Make it awesome
 
 */
 
-let gameChar_x;
-let gameChar_y;
+let character;
+
 let floorPos_y;
 let scrollPos;
 let gameChar_world_x;
 
-let isLeft;
-let isRight;
-let isFalling;
-let isPlummeting;
+let game_score;
+let flagpole;
+let lives;
 
 let clouds;
 let mountains;
@@ -21,11 +20,6 @@ let collectables;
 let canyons;
 let trees_x;
 let platforms;
-
-let game_score;
-let flagpole;
-let lives;
-
 let enemies;
 
 let jumpSound;
@@ -106,7 +100,7 @@ function draw() {
   for (let i = 0; i < enemies.length; i++) {
     enemies[i].draw();
 
-    let touchedEnemy = enemies[i].checkContact(gameChar_world_x, gameChar_y);
+    let touchedEnemy = enemies[i].checkContact(gameChar_world_x, character.y);
 
     if (touchedEnemy) {
       lives -= 1;
@@ -141,40 +135,40 @@ function draw() {
   drawGameChar();
 
   // character movement
-  if (isLeft) {
-    if (gameChar_x > width * 0.2) {
-      gameChar_x -= 5;
+  if (character.isLeft) {
+    if (character.x > width * 0.2) {
+      character.x -= 5;
     } else {
       scrollPos += 5;
     }
   }
 
-  if (isRight) {
-    if (gameChar_x < width * 0.8) {
-      gameChar_x += 5;
+  if (character.isRight) {
+    if (character.x < width * 0.8) {
+      character.x += 5;
     } else {
       scrollPos -= 5;
     }
   }
 
-  if (gameChar_y < floorPos_y) {
+  if (character.y < floorPos_y) {
     let isInPlatform = false;
     for (let i = 0; i < platforms.length; i++) {
-      if (platforms[i].checkContact(gameChar_world_x, gameChar_y)) {
+      if (platforms[i].checkContact(gameChar_world_x, character.y)) {
         isInPlatform = true;
-        isFalling = false;
+        character.isFalling = false;
         break;
       }
     }
     if (!isInPlatform) {
-      gameChar_y += 2;
-      isFalling = true;
+      character.y += 2;
+      character.isFalling = true;
     }
   } else {
-    isFalling = false;
+    character.isFalling = false;
   }
 
-  gameChar_world_x = gameChar_x - scrollPos;
+  gameChar_world_x = character.x - scrollPos;
 
   checkPlayerDie();
 
@@ -186,198 +180,198 @@ function draw() {
 // game controls
 function keyPressed() {
   if (keyCode === 37) {
-    isLeft = true;
+    character.isLeft = true;
   } else if (keyCode === 39) {
-    isRight = true;
+    character.isRight = true;
   } else if (keyCode === 32) {
     if (lives < 1 || flagpole.isReached) {
       startGame();
       lives = 3;
-    } else if (!isFalling) {
+    } else if (!character.isFalling) {
       jumpSound.play();
-      gameChar_y -= 115;
+      character.y -= 115;
     }
   }
 }
 
 function keyReleased() {
   if (keyCode === 37) {
-    isLeft = false;
+    character.isLeft = false;
   } else if (keyCode === 39) {
-    isRight = false;
+    character.isRight = false;
   }
 }
 
 // draw functions
 function drawGameChar() {
-  if (isLeft && isFalling) {
+  if (character.isLeft && character.isFalling) {
     stroke(0);
     fill(17, 238, 85);
-    rect(gameChar_x - 18, gameChar_y - 10, 12, 3);
-    rect(gameChar_x + 5, gameChar_y - 10, 12, 3);
+    rect(character.x - 18, character.y - 10, 12, 3);
+    rect(character.x + 5, character.y - 10, 12, 3);
     triangle(
-      gameChar_x - 8,
-      gameChar_y - 35,
-      gameChar_x - 3,
-      gameChar_y - 30,
-      gameChar_x - 10,
-      gameChar_y - 28
+      character.x - 8,
+      character.y - 35,
+      character.x - 3,
+      character.y - 30,
+      character.x - 10,
+      character.y - 28
     );
-    ellipse(gameChar_x, gameChar_y - 18, 30, 30);
+    ellipse(character.x, character.y - 18, 30, 30);
     triangle(
-      gameChar_x + 5,
-      gameChar_y - 35,
-      gameChar_x,
-      gameChar_y - 30,
-      gameChar_x + 7,
-      gameChar_y - 28
+      character.x + 5,
+      character.y - 35,
+      character.x,
+      character.y - 30,
+      character.x + 7,
+      character.y - 28
     );
     fill(250);
-    ellipse(gameChar_x - 8, gameChar_y - 22, 15, 15);
+    ellipse(character.x - 8, character.y - 22, 15, 15);
     fill(108, 165, 128);
-    ellipse(gameChar_x - 11, gameChar_y - 22, 8, 8);
+    ellipse(character.x - 11, character.y - 22, 8, 8);
     fill(0);
-    ellipse(gameChar_x - 12, gameChar_y - 22, 2, 2);
-  } else if (isRight && isFalling) {
+    ellipse(character.x - 12, character.y - 22, 2, 2);
+  } else if (character.isRight && character.isFalling) {
     stroke(0);
     fill(17, 238, 85);
-    rect(gameChar_x - 18, gameChar_y - 10, 12, 3);
-    rect(gameChar_x + 5, gameChar_y - 10, 12, 3);
+    rect(character.x - 18, character.y - 10, 12, 3);
+    rect(character.x + 5, character.y - 10, 12, 3);
     triangle(
-      gameChar_x + 8,
-      gameChar_y - 35,
-      gameChar_x + 3,
-      gameChar_y - 30,
-      gameChar_x + 10,
-      gameChar_y - 28
+      character.x + 8,
+      character.y - 35,
+      character.x + 3,
+      character.y - 30,
+      character.x + 10,
+      character.y - 28
     );
-    ellipse(gameChar_x, gameChar_y - 18, 30, 30);
+    ellipse(character.x, character.y - 18, 30, 30);
     triangle(
-      gameChar_x - 5,
-      gameChar_y - 35,
-      gameChar_x,
-      gameChar_y - 30,
-      gameChar_x - 7,
-      gameChar_y - 28
+      character.x - 5,
+      character.y - 35,
+      character.x,
+      character.y - 30,
+      character.x - 7,
+      character.y - 28
     );
     fill(250);
-    ellipse(gameChar_x + 8, gameChar_y - 22, 15, 15);
+    ellipse(character.x + 8, character.y - 22, 15, 15);
     fill(108, 165, 128);
-    ellipse(gameChar_x + 11, gameChar_y - 22, 8, 8);
+    ellipse(character.x + 11, character.y - 22, 8, 8);
     fill(0);
-    ellipse(gameChar_x + 12, gameChar_y - 22, 2, 2);
-  } else if (isLeft) {
+    ellipse(character.x + 12, character.y - 22, 2, 2);
+  } else if (character.isLeft) {
     stroke(0);
     fill(17, 238, 85);
-    rect(gameChar_x - 6, gameChar_y - 7, 3, 10);
-    rect(gameChar_x + 2, gameChar_y - 7, 3, 10);
+    rect(character.x - 6, character.y - 7, 3, 10);
+    rect(character.x + 2, character.y - 7, 3, 10);
     triangle(
-      gameChar_x - 8,
-      gameChar_y - 35,
-      gameChar_x - 3,
-      gameChar_y - 30,
-      gameChar_x - 10,
-      gameChar_y - 28
+      character.x - 8,
+      character.y - 35,
+      character.x - 3,
+      character.y - 30,
+      character.x - 10,
+      character.y - 28
     );
-    ellipse(gameChar_x, gameChar_y - 18, 30, 30);
+    ellipse(character.x, character.y - 18, 30, 30);
     triangle(
-      gameChar_x + 5,
-      gameChar_y - 35,
-      gameChar_x,
-      gameChar_y - 30,
-      gameChar_x + 7,
-      gameChar_y - 28
+      character.x + 5,
+      character.y - 35,
+      character.x,
+      character.y - 30,
+      character.x + 7,
+      character.y - 28
     );
     fill(250);
-    ellipse(gameChar_x - 8, gameChar_y - 22, 15, 15);
+    ellipse(character.x - 8, character.y - 22, 15, 15);
     fill(108, 165, 128);
-    ellipse(gameChar_x - 11, gameChar_y - 22, 8, 8);
+    ellipse(character.x - 11, character.y - 22, 8, 8);
     fill(0);
-    ellipse(gameChar_x - 12, gameChar_y - 22, 2, 2);
-  } else if (isRight) {
+    ellipse(character.x - 12, character.y - 22, 2, 2);
+  } else if (character.isRight) {
     stroke(0);
     fill(17, 238, 85);
-    rect(gameChar_x - 6, gameChar_y - 7, 3, 10);
-    rect(gameChar_x + 2, gameChar_y - 7, 3, 10);
+    rect(character.x - 6, character.y - 7, 3, 10);
+    rect(character.x + 2, character.y - 7, 3, 10);
     triangle(
-      gameChar_x + 8,
-      gameChar_y - 35,
-      gameChar_x + 3,
-      gameChar_y - 30,
-      gameChar_x + 10,
-      gameChar_y - 28
+      character.x + 8,
+      character.y - 35,
+      character.x + 3,
+      character.y - 30,
+      character.x + 10,
+      character.y - 28
     );
-    ellipse(gameChar_x, gameChar_y - 18, 30, 30);
+    ellipse(character.x, character.y - 18, 30, 30);
     triangle(
-      gameChar_x - 5,
-      gameChar_y - 35,
-      gameChar_x,
-      gameChar_y - 30,
-      gameChar_x - 7,
-      gameChar_y - 28
+      character.x - 5,
+      character.y - 35,
+      character.x,
+      character.y - 30,
+      character.x - 7,
+      character.y - 28
     );
     fill(250);
-    ellipse(gameChar_x + 8, gameChar_y - 22, 15, 15);
+    ellipse(character.x + 8, character.y - 22, 15, 15);
     fill(108, 165, 128);
-    ellipse(gameChar_x + 11, gameChar_y - 22, 8, 8);
+    ellipse(character.x + 11, character.y - 22, 8, 8);
     fill(0);
-    ellipse(gameChar_x + 12, gameChar_y - 22, 2, 2);
-  } else if (isFalling || isPlummeting) {
+    ellipse(character.x + 12, character.y - 22, 2, 2);
+  } else if (character.isFalling || character.isPlummeting) {
     stroke(0);
     fill(17, 238, 85);
-    rect(gameChar_x - 18, gameChar_y - 10, 12, 3);
-    rect(gameChar_x + 5, gameChar_y - 10, 12, 3);
+    rect(character.x - 18, character.y - 10, 12, 3);
+    rect(character.x + 5, character.y - 10, 12, 3);
     triangle(
-      gameChar_x - 8,
-      gameChar_y - 35,
-      gameChar_x - 3,
-      gameChar_y - 30,
-      gameChar_x - 10,
-      gameChar_y - 28
+      character.x - 8,
+      character.y - 35,
+      character.x - 3,
+      character.y - 30,
+      character.x - 10,
+      character.y - 28
     );
     triangle(
-      gameChar_x + 8,
-      gameChar_y - 35,
-      gameChar_x + 3,
-      gameChar_y - 30,
-      gameChar_x + 10,
-      gameChar_y - 28
+      character.x + 8,
+      character.y - 35,
+      character.x + 3,
+      character.y - 30,
+      character.x + 10,
+      character.y - 28
     );
-    ellipse(gameChar_x, gameChar_y - 18, 30, 30);
+    ellipse(character.x, character.y - 18, 30, 30);
     fill(250);
-    ellipse(gameChar_x, gameChar_y - 22, 15, 15);
+    ellipse(character.x, character.y - 22, 15, 15);
     fill(108, 165, 128);
-    ellipse(gameChar_x, gameChar_y - 22, 8, 8);
+    ellipse(character.x, character.y - 22, 8, 8);
     fill(0);
-    ellipse(gameChar_x, gameChar_y - 22, 2, 2);
+    ellipse(character.x, character.y - 22, 2, 2);
   } else {
     stroke(0);
     fill(17, 238, 85);
-    rect(gameChar_x - 6, gameChar_y - 7, 3, 10);
-    rect(gameChar_x + 2, gameChar_y - 7, 3, 10);
+    rect(character.x - 6, character.y - 7, 3, 10);
+    rect(character.x + 2, character.y - 7, 3, 10);
     triangle(
-      gameChar_x - 8,
-      gameChar_y - 35,
-      gameChar_x - 3,
-      gameChar_y - 30,
-      gameChar_x - 10,
-      gameChar_y - 28
+      character.x - 8,
+      character.y - 35,
+      character.x - 3,
+      character.y - 30,
+      character.x - 10,
+      character.y - 28
     );
     triangle(
-      gameChar_x + 8,
-      gameChar_y - 35,
-      gameChar_x + 3,
-      gameChar_y - 30,
-      gameChar_x + 10,
-      gameChar_y - 28
+      character.x + 8,
+      character.y - 35,
+      character.x + 3,
+      character.y - 30,
+      character.x + 10,
+      character.y - 28
     );
-    ellipse(gameChar_x, gameChar_y - 18, 30, 30);
+    ellipse(character.x, character.y - 18, 30, 30);
     fill(250);
-    ellipse(gameChar_x, gameChar_y - 22, 15, 15);
+    ellipse(character.x, character.y - 22, 15, 15);
     fill(108, 165, 128);
-    ellipse(gameChar_x, gameChar_y - 22, 8, 8);
+    ellipse(character.x, character.y - 22, 8, 8);
     fill(0);
-    ellipse(gameChar_x, gameChar_y - 22, 2, 2);
+    ellipse(character.x, character.y - 22, 2, 2);
   }
 }
 
@@ -482,14 +476,14 @@ function drawCanyon(t_canyon) {
 
 function checkCanyon(t_canyon) {
   if (
-    gameChar_y >= floorPos_y &&
+    character.y >= floorPos_y &&
     gameChar_world_x > t_canyon.x_pos + 25 &&
     gameChar_world_x < t_canyon.x_pos - 25 + t_canyon.width
   ) {
-    isPlummeting = true;
+    character.isPlummeting = true;
   }
-  if (isPlummeting) {
-    gameChar_y += 5;
+  if (character.isPlummeting) {
+    character.y += 5;
   }
 }
 
@@ -551,7 +545,7 @@ function checkCollectables(t_collectable) {
   if (
     dist(
       gameChar_world_x,
-      gameChar_y,
+      character.y,
       t_collectable.x_pos,
       t_collectable.y_pos
     ) < 30
@@ -563,7 +557,7 @@ function checkCollectables(t_collectable) {
 }
 
 function checkPlayerDie() {
-  if (gameChar_y > height) {
+  if (character.y > height) {
     lives -= 1;
 
     if (lives > 0) {
@@ -617,9 +611,9 @@ function Enemy(x, y, range) {
   };
   this.draw = function () {
     this.update();
-    const isRight = this.inc === 1;
+    const enemyIsRight = this.inc === 1;
 
-    if (isRight) {
+    if (enemyIsRight) {
       stroke(0);
       fill(110, 70, 174);
       rect(this.currentX - 6, this.y - 7, 3, 10);
@@ -686,17 +680,18 @@ function Enemy(x, y, range) {
 // game setup
 function startGame() {
   playedEndSound = false;
-  gameChar_x = width / 2;
-  gameChar_y = floorPos_y;
+  character = {
+    x: width / 2,
+    y: floorPos_y,
+    isLeft: false,
+    isRight: false,
+    isFalling: false,
+    isPlummeting: false,
+  };
 
   scrollPos = 0;
 
-  gameChar_world_x = gameChar_x - scrollPos;
-
-  isLeft = false;
-  isRight = false;
-  isFalling = false;
-  isPlummeting = false;
+  gameChar_world_x = character.x - scrollPos;
 
   trees_x = [-820, -410, -255, -100, 430, 1000, 1320, 1480, 1800, 2550, 2680];
 
