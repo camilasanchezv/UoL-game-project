@@ -113,7 +113,7 @@ function draw() {
 
   pop();
 
-  // win and lose
+  // win and lose screen
   textSize(40);
   fill(255);
   if (lives < 1) {
